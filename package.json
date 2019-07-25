@@ -1,0 +1,37 @@
+{
+  "name": "homebridge-genie-aladdin-garage-opener",
+  "version": "0.0.1",
+  "description": "Garage Door Opener plugin for Genie Aladdin Connect",
+  "author": {
+    "name": "Anatoly Ivanov"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": "/issues",
+    "email": "anatoly.ivanov+homebridge@gmail.com"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "garage",
+    "genie",
+    "aladdin",
+    "garagedoor",
+    "garagedooropener",
+    "home",
+    "homekit"
+  ],
+  "engines": {
+    "node": ">=8.0.0",
+    "homebridge": ">=0.3.0"
+  },
+  "dependencies": {
+    "node-aladdin-connect-garage-door": ">=0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {}
+}
