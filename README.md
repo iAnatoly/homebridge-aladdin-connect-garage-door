@@ -10,7 +10,7 @@ Mainly, so you can put username and password into your homebridge config, rather
 ## Installation
 
 1. Install homebridge using: `npm install -g homebridge`
-2. Install this plugin using: `npm install -g homebridge-genie-aladdin-garage-opener`
+2. Install this plugin using: `npm install -g homebridge-aladdin-connect-garage-opener`
 3. Update your configuration file. See the sample below.
 
 ## Configuration
