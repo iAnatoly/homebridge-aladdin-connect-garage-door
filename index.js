@@ -40,7 +40,7 @@ class AladdinConnectGarageDoorOpener {
         .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
         .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener')
 
-    return [informationService, this.service]
+    return [informationService, this.garageDoorService]
   }
 
   setState(isClosed, callback, context) {
@@ -52,9 +52,9 @@ class AladdinConnectGarageDoorOpener {
   
     var accessory = this;
     var command = isClosed ? 'close' : 'open';
-    accessory.log('Commnand to run: ' + command);
+    accessory.log('Command to run: ' + command);
   
-    aladdinGarageDoor(door.username, door.password, command, function (text) {
+    aladdinGarageDoor(accessory.username, accessory.password, command, function (text) {
           accessory.log('Set ' + accessory.name + ' to ' + command);
           if (text.indexOf('OPENING') > -1) {
             accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
@@ -78,14 +78,14 @@ class AladdinConnectGarageDoorOpener {
   }
 
   getState(callback) {
-    var door = this;
-    aladdinGarageDoor(door.username, door.password, 'status', function (state) {
-        door.log('State of ' + door.name + ' is: ' + state);
+    var accessory = this;
+    aladdinGarageDoor(accessory.username, accessory.password, 'status', function (state) {
+        accessory.log('State of ' + accessory.name + ' is: ' + state);
         callback(null, Characteristic.CurrentDoorState[state]);
-        if (door.pollStateDelay > 0) {
-            door.pollState();
+        if (accessory.pollStateDelay > 0) {
+            accessory.pollState();
         }
-      }, door.deviceNumber, door.garageNumber);
+      }, accessory.deviceNumber, accessory.garageNumber);
   }
 
   pollState() {
