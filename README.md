@@ -36,12 +36,12 @@ Configuration sample:
 
 Parameter                   | Description
 ------------------------|------------
-**accessory**           | Must always be "GarageCommand". (required)
+**accessory**           | Must always be "AladdinConnectGarageDoorOpener" (required)
 **name**                | Name of the Garage Door
-**username**            | 
-**password**            |
+**username**            | Your Aladdin Connect username 
+**password**            | Your Aladdin Connect password
 **status_update_delay** | Time to have door in opening or closing state (defaults to 15 seconds)
 **poll_state_delay**    | Time between polling for the garage door's state (leave blank to disable state polling)
-**device_number**	| Door number (0-2). Defaults to 0.
-**garage_number**	| Garage number (1-3). Defaults to 1.
+**device_number**	| Door number (0-2). Defaults to 0
+**garage_number**	| Garage number (1-3). Defaults to 1
 
