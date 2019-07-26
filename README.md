@@ -25,7 +25,9 @@ Configuration sample:
     "username": "your.aladdin.connect.username@gmail.con",
     "password": "",
     "status_update_delay": 15,
-    "poll_state_delay": 20
+    "poll_state_delay": 20,
+    "device_number": 0,
+    "garage_number": 1
   }
 ]
 
@@ -40,4 +42,6 @@ Parameter                   | Description
 **password**            |
 **status_update_delay** | Time to have door in opening or closing state (defaults to 15 seconds)
 **poll_state_delay**    | Time between polling for the garage door's state (leave blank to disable state polling)
+**device_number**	| Door number (0-2). Defaults to 0.
+**garage_number**	| Garage number (1-3). Defaults to 1.
 

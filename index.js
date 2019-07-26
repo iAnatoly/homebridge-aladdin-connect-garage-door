@@ -23,8 +23,8 @@ class AladdinConnectGarageDoorOpener {
     this.password = config.password;
     this.statusUpdateDelay = config.status_update_delay || 15;
     this.pollStateDelay = config.poll_state_delay || 0;
-    this.deviceNumber = config.deviceNumber || 0;
-    this.garageNumber = config.garageNumber || 1;
+    this.deviceNumber = config.device_number || 0;
+    this.garageNumber = config.garage_number || 1;
   }
 
   getServices () {
