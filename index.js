@@ -10,14 +10,18 @@ const aladdinGarageDoor = require('node-aladdin-connect-garage-door');
 let Service, Characteristic
 
 module.exports = (homebridge) => {
-  Service = homebridge.hap.Service
-  Characteristic = homebridge.hap.Characteristic
-  homebridge.registerAccessory('homebridge-aladdin-connect-garage-door', 'AladdinConnectGarageDoorOpener', AladdinConnectGarageDoorOpener)
+  Service = homebridge.hap.Service;
+  Characteristic = homebridge.hap.Characteristic;
+  homebridge.registerAccessory(
+    'homebridge-aladdin-connect-garage-door',
+    'AladdinConnectGarageDoorOpener',
+    AladdinConnectGarageDoorOpener
+  );
 }
 
 class AladdinConnectGarageDoorOpener {
   constructor (log, config) {
-    this.log = log
+    this.log = log;
     this.name = config.name;
     this.username = config.username;
     this.password = config.password;
@@ -38,9 +42,9 @@ class AladdinConnectGarageDoorOpener {
     const informationService = new Service.AccessoryInformation()
         .setCharacteristic(Characteristic.Manufacturer, 'iAnatoly')
         .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
-        .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener')
+        .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener');
 
-    return [informationService, this.garageDoorService]
+    return [informationService, this.garageDoorService];
   }
 
   setState(isClosed, callback, context) {
@@ -54,38 +58,55 @@ class AladdinConnectGarageDoorOpener {
     var command = isClosed ? 'close' : 'open';
     accessory.log('Command to run: ' + command);
   
-    aladdinGarageDoor(accessory.username, accessory.password, command, function (text) {
-          accessory.log('Set ' + accessory.name + ' to ' + command);
-          if (text.indexOf('OPENING') > -1) {
-            accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
-            setTimeout(
-              function() {
-                accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
-              },
-              accessory.statusUpdateDelay * 1000
-            );
-          } else if (text.indexOf('CLOSING') > -1) {
-            accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
-            setTimeout(
-              function() {
-                accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
-              },
-              accessory.statusUpdateDelay * 1000
-            );
-          }
-         callback(null);
-       });
+    aladdinGarageDoor(
+      accessory.username, accessory.password, 
+      command, 
+      function (text) {
+        accessory.log('Set ' + accessory.name + ' to ' + command);
+        if (text.indexOf('OPENING') > -1) {
+          accessory
+            .garageDoorService
+            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
+          setTimeout(
+            function() {
+              accessory
+                .garageDoorService
+                .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
+            },
+            accessory.statusUpdateDelay * 1000
+          );
+        } else if (text.indexOf('CLOSING') > -1) {
+          accessory
+            .garageDoorService
+            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
+          setTimeout(
+            function() {
+              accessory
+                .garageDoorService
+                .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
+            },
+            accessory.statusUpdateDelay * 1000
+          );
+        }
+       callback(null);
+     });
   }
 
   getState(callback) {
     var accessory = this;
-    aladdinGarageDoor(accessory.username, accessory.password, 'status', function (state) {
+    aladdinGarageDoor(
+      accessory.username, accessory.password, 
+      'status', 
+      function (state) {
         accessory.log('State of ' + accessory.name + ' is: ' + state);
         callback(null, Characteristic.CurrentDoorState[state]);
         if (accessory.pollStateDelay > 0) {
             accessory.pollState();
         }
-      }, accessory.deviceNumber, accessory.garageNumber);
+      }, 
+      accessory.deviceNumber, 
+      accessory.garageNumber
+    );
   }
 
   pollState() {
@@ -105,13 +126,18 @@ class AladdinConnectGarageDoorOpener {
             return;
           }
   
-          if (currentDeviceState === Characteristic.CurrentDoorState.OPEN || currentDeviceState === Characteristic.CurrentDoorState.CLOSED) {
+          if (currentDeviceState === Characteristic.CurrentDoorState.OPEN 
+              || currentDeviceState === Characteristic.CurrentDoorState.CLOSED) {
             // Set the target state to match the actual state
             // If this isn't done the Home app will show the door in the wrong transitioning state (opening/closing)
-            accessory.garageDoorService.getCharacteristic(Characteristic.TargetDoorState)
+            accessory
+              .garageDoorService
+              .getCharacteristic(Characteristic.TargetDoorState)
               .setValue(currentDeviceState, null, 'pollState');
           }
-          accessory.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, currentDeviceState);
+          accessory
+              .garageDoorService
+              .setCharacteristic(Characteristic.CurrentDoorState, currentDeviceState);
         })
       },
       accessory.pollStateDelay * 1000
