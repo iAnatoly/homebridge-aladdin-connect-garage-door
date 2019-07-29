@@ -5,7 +5,8 @@
 
 'use strict'
 
-const aladdinGarageDoor = require('node-aladdin-connect-garage-door');
+const aladdinGarageDoor = require('./aladdin-api');
+const callbackify = require('util-callbackify');
 
 let Service, Characteristic
 
@@ -15,11 +16,13 @@ module.exports = (homebridge) => {
   homebridge.registerAccessory(
     'homebridge-aladdin-connect-garage-door',
     'AladdinConnectGarageDoorOpener',
-    AladdinConnectGarageDoorOpener
+    AliBaba
   );
 }
 
-class AladdinConnectGarageDoorOpener {
+// https://en.wikipedia.org/wiki/Ali_Baba_and_the_Forty_Thieves
+class AliBaba {
+
   constructor (log, config) {
     this.log = log;
     this.name = config.name;
@@ -29,15 +32,16 @@ class AladdinConnectGarageDoorOpener {
     this.pollStateDelay = config.poll_state_delay || 0;
     this.deviceNumber = config.device_number || 0;
     this.garageNumber = config.garage_number || 1;
+    this.authToken = null;
   }
-
+  
   getServices () {
     this.garageDoorService = new Service.GarageDoorOpener(this.name, this.name);
     this.garageDoorService.getCharacteristic(Characteristic.TargetDoorState)
-        .on('set', this.setState.bind(this))
-        .on('get', this.getState.bind(this));
+        .on('set', callbackify(this.setState))
+        .on('get', callbackify(this.getState));
     this.garageDoorService.getCharacteristic(Characteristic.CurrentDoorState)
-        .on('get', this.getState.bind(this));
+        .on('get', callbackify(this.getState));
  
     const informationService = new Service.AccessoryInformation()
         .setCharacteristic(Characteristic.Manufacturer, 'iAnatoly')
@@ -47,100 +51,34 @@ class AladdinConnectGarageDoorOpener {
     return [informationService, this.garageDoorService];
   }
 
-  setState(isClosed, callback, context) {
-    if (context === 'pollState') {
-      // The state has been updated by the pollState command - don't run the open/close command
-      callback(null);
-      return;
+  async getAuthToken() {
+    if (!this.getAuthToken) {
+        this.authToken = await aladdinGarageDoor.getToken(this.username, this.password, this.deviceNumber);    
     }
-  
-    var accessory = this;
-    var command = isClosed ? 'close' : 'open';
-    accessory.log('Command to run: ' + command);
-  
-    aladdinGarageDoor(
-      accessory.username, accessory.password, 
-      command, 
-      function (text) {
-        accessory.log('Set ' + accessory.name + ' to ' + command);
-        if (text.indexOf('OPENING') > -1) {
-          accessory
-            .garageDoorService
-            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
-          setTimeout(
-            function() {
-              accessory
-                .garageDoorService
-                .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPEN);
-            },
-            accessory.statusUpdateDelay * 1000
-          );
-        } else if (text.indexOf('CLOSING') > -1) {
-          accessory
-            .garageDoorService
-            .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
-          setTimeout(
-            function() {
-              accessory
-                .garageDoorService
-                .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSED);
-            },
-            accessory.statusUpdateDelay * 1000
-          );
-        }
-       callback(null);
-     });
+    return this.authToken;
   }
 
-  getState(callback) {
-    var accessory = this;
-    aladdinGarageDoor(
-      accessory.username, accessory.password, 
-      'status', 
-      function (state) {
-        accessory.log('State of ' + accessory.name + ' is: ' + state);
-        callback(null, Characteristic.CurrentDoorState[state]);
-        if (accessory.pollStateDelay > 0) {
-            accessory.pollState();
-        }
-      }, 
-      accessory.deviceNumber, 
-      accessory.garageNumber
-    );
+  async sleep(time_s) {
+      setTimeout(eh=>{}, time_s * 1000);
+  }
+     
+  async setState(isClosed) {
+    let authToken = this.getAuthToken();
+    let result;
+    if (isClosed) {
+        this.log("SESAME, OPEN!");
+        result = await aladdinGarageDoor.openDoor(authToken, this.garageNumber);
+    } else {
+        this.log("SESAME, CLOSE!");
+        result = await aladdinGarageDoor.closeDoor(authToken, this.garageNumber);
+    }
+    this.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState[result]);
   }
 
-  pollState() {
-    var accessory = this;
-  
-    // Clear any existing timer
-    if (accessory.stateTimer) {
-      clearTimeout(accessory.stateTimer);
-      accessory.stateTimer = null;
-    }
-  
-    accessory.stateTimer = setTimeout(
-      function() {
-        accessory.getState(function(err, currentDeviceState) {
-          if (err) {
-            accessory.log(err);
-            return;
-          }
-  
-          if (currentDeviceState === Characteristic.CurrentDoorState.OPEN 
-              || currentDeviceState === Characteristic.CurrentDoorState.CLOSED) {
-            // Set the target state to match the actual state
-            // If this isn't done the Home app will show the door in the wrong transitioning state (opening/closing)
-            accessory
-              .garageDoorService
-              .getCharacteristic(Characteristic.TargetDoorState)
-              .setValue(currentDeviceState, null, 'pollState');
-          }
-          accessory
-              .garageDoorService
-              .setCharacteristic(Characteristic.CurrentDoorState, currentDeviceState);
-        })
-      },
-      accessory.pollStateDelay * 1000
-    );
+  async getState(callback) {
+    let authToken = await this.getAuthToken();
+    let state = await this.aladdinGarageDoor.getState(authToken, this.garageNumber);
+    this.log('State of ' + this.name + ' is: ' + state);
+    this.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState[state]);   
   }
 }

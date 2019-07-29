@@ -162,7 +162,7 @@ async function getToken(user, password, deviceNumber = 0) {
     };
 }
 
-async function openDoor(cred, doorNumber = 1) {
+async function openDoor(cred, doorNumber) {
     try {
         return await openClose(1, creds, doorNumber);
     } catch (err) {
@@ -171,7 +171,7 @@ async function openDoor(cred, doorNumber = 1) {
     }
 }
 
-async function closeDoor(cred, doorNumber = 1) {
+async function closeDoor(cred, doorNumber) {
     try {
         return await openClose(0, creds, doorNumber);
     } catch (err) {
@@ -180,7 +180,7 @@ async function closeDoor(cred, doorNumber = 1) {
     }
 }
 
-async function getDoorStatus(cred, doorNumber = 1) {
+async function getDoorStatus(cred, doorNumber) {
     try {
         return await getStatus(creds, doorNumber);
     } catch (err) {
