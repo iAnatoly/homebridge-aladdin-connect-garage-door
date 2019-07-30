@@ -6,7 +6,7 @@
 'use strict'
 
 const aladdinGarageDoor = require('./aladdin-api');
-const callbackify = require('util-callbackify');
+const callbackify = require('callbackify');
 
 let Service, Characteristic
 
@@ -52,7 +52,7 @@ class AliBaba {
   }
 
   async getAuthToken() {
-    if (!this.getAuthToken) {
+    if (!this.authToken) {
         this.authToken = await aladdinGarageDoor.getToken(this.username, this.password, this.deviceNumber);    
     }
     return this.authToken;
@@ -63,7 +63,7 @@ class AliBaba {
   }
      
   async setState(isClosed) {
-    let authToken = this.getAuthToken();
+    let authToken = await this.getAuthToken();
     let result;
     if (isClosed) {
         this.log("SESAME, OPEN!");
@@ -75,7 +75,7 @@ class AliBaba {
     this.garageDoorService.setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState[result]);
   }
 
-  async getState(callback) {
+  async getState() {
     let authToken = await this.getAuthToken();
     let state = await this.aladdinGarageDoor.getState(authToken, this.garageNumber);
     this.log('State of ' + this.name + ' is: ' + state);
