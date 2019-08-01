@@ -38,7 +38,7 @@ function translateState(statusNumber) {
     }
 }
 
-async function openClose(shouldOpen, creds,genieRPC_Auth,doorNumber) {
+async function sendCommand(shouldOpen, creds, doorNumber) {
     let response = await rp({
         method: 'POST',
         uri: genieRPC_URI,
@@ -162,37 +162,10 @@ async function getToken(user, password, deviceNumber = 0) {
     };
 }
 
-async function openDoor(cred, doorNumber) {
-    try {
-        return await openClose(1, creds, doorNumber);
-    } catch (err) {
-        console.log(err);
-        return 'STOPPED';
-    }
-}
-
-async function closeDoor(cred, doorNumber) {
-    try {
-        return await openClose(0, creds, doorNumber);
-    } catch (err) {
-        console.log(err);
-        return 'STOPPED';
-    }
-}
-
-async function getDoorStatus(cred, doorNumber) {
-    try {
-        return await getStatus(creds, doorNumber);
-    } catch (err) {
-        console.log(err);
-        return 'STOPPED';
-    }
-}
 
 module.exports = {
     getToken: getToken,
-    openDoor: openDoor,
-    closeDoor: closeDoor,
-    getDoorStatus: getDoorStatus
+    sendCommand: sendCommand,
+    getState: getStatus
 };
 
