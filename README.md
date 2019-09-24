@@ -49,3 +49,5 @@ Parameter                   | Description
 ## Note:
 
 I was unable to get proper response from the API when I used a secondary (invited) Aladdin Connect credentials. As a workaround, I had to use the primary login credentials instead. I advise you do the same.
+
+The `ignore_errors` config option is in place to prevent false OPEN events from occuring if the aladdin connect API fails to respond. Events where STOPPED is replaced with CLOSED are logged, but consider this a word of caution that setting this option to true ignores errors and could incorrectly report your garage door as CLOSED when it is not.
