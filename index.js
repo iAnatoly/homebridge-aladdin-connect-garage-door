@@ -29,6 +29,7 @@ class AladdinConnectGarageDoorOpener {
     this.pollStateDelay = config.poll_state_delay || 0;
     this.deviceNumber = config.device_number || 0;
     this.garageNumber = config.garage_number || 1;
+    this.ignoreErrors = config.ignore_errors || false;
   }
 
   getServices () {
@@ -98,8 +99,9 @@ class AladdinConnectGarageDoorOpener {
       accessory.username, accessory.password, 
       'status', 
       function (state) {
-        accessory.log('State of ' + accessory.name + ' is: ' + state);
-        callback(null, Characteristic.CurrentDoorState[state]);
+        var currentState = accessory.ignoreErrors && state === 'STOPPED' ? 'CLOSED' : state;
+        accessory.log('State of ' + accessory.name + ' is: ' + state + ' (sent ' + currentState + ')');
+        callback(null, Characteristic.CurrentDoorState[currentState], 'getState');
         if (accessory.pollStateDelay > 0) {
             accessory.pollState();
         }
