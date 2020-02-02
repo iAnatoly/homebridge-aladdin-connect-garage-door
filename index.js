@@ -31,6 +31,7 @@ class AladdinConnectGarageDoorOpener {
     this.garageNumber = config.garage_number || 1;
     this.ignoreErrors = config.ignore_errors || false;
     this.logPolling = config.log_polling || false;
+    this.allowDebug = config.allow_debug || false;
   }
 
   getServices () {
@@ -91,7 +92,11 @@ class AladdinConnectGarageDoorOpener {
           );
         }
        callback(null);
-     });
+     },
+     accessory.deviceNumber,
+     accessory.garageNumber,
+     accessory.allowDebug
+    );
   }
 
   getState(callback) {
@@ -109,8 +114,9 @@ class AladdinConnectGarageDoorOpener {
             accessory.pollState();
         }
       }, 
-      accessory.deviceNumber, 
-      accessory.garageNumber
+      accessory.deviceNumber,
+      accessory.garageNumber,
+      accessory.allowDebug
     );
   }
 
