@@ -45,6 +45,8 @@ Parameter                   | Description
 **device_number**	| Door number (0-2). Defaults to 0
 **garage_number**	| Garage number (1-3). Defaults to 1
 **ignore_errors**	| true/false. Causes the plugin to replace 'STOPPED' status with 'CLOSED' (defaults to false)
+**log_polling** | true/false. Poll logs only show on error; Set to true to log every poll (defaults to false)
+**allow_debug**	| true/false. Dumps a lot of debug info to stdout. (defaults to false)
 
 ## Note:
 

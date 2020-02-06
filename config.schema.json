@@ -1,0 +1,101 @@
+{
+  "pluginAlias": "AladdinConnectGarageDoorOpener",
+  "pluginType": "accessory",
+  "singular": false,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "default": "Garage Door",
+        "required": true
+      },
+      "username": {
+        "title": "User Name/Email Address",
+        "type": "string",
+        "required": true
+      },
+      "password": {
+        "title": "Password",
+        "type": "string",
+        "required": true,
+        "options": {
+          "hidden": true
+        }
+      },
+      "status_update_delay": {
+        "title": "Status Update Delay",
+        "type": "string",
+        "default": "15",
+        "placeholder": "# of seconds to close",
+        "required": true
+      },
+      "poll_state_delay": {
+        "title": "Enable Polling (in seconds)",
+        "type": "integer",
+        "placeholder": "# of seconds"
+      },
+      "device_number": {
+        "title": "Device Number",
+        "type": "integer",
+        "placeholder": "0"
+      },
+      "garage_number": {
+        "title": "Garage Number",
+        "type": "integer",
+        "placeholder": "1"
+      },
+      "ignore_errors": {
+        "title": "Ignore Errors",
+        "type": "boolean"
+      },
+      "log_polling": {
+        "title": "Log Polling",
+        "type": "boolean"
+      },
+      "allow_debug": {
+        "title": "Allow Debug Logs",
+        "type": "boolean"
+      }
+    }
+  },
+  "form": [
+    "name",
+    "username",
+    "password",
+    {
+      "type": "fieldset",
+      "expandable": true,
+      "title": "Polling Settings",
+      "description": "Options for polling Garage Door when Home app is closed",
+      "items": [
+        "poll_state_delay",
+        "log_polling"
+      ]
+    },
+    {
+      "type": "fieldset",
+      "expandable": true,
+      "title": "Garage Door Settings",
+      "description": "Options for time to close and multiple garage door setup",
+      "items": [
+        "status_update_delay",
+        "device_number",
+        "garage_number"
+
+      ]
+    },
+    {
+      "type": "fieldset",
+      "expandable": true,
+      "title": "Advanced Settings",
+      "description": "Don't change these, unless you understand what you're doing.",
+      "items": [
+        "ignore_errors",
+        "allow_debug"
+      ]
+    }
+  ],
+  "display": null
+}
