@@ -27,14 +27,17 @@ Configuration sample:
     "status_update_delay": 15,
     "poll_state_delay": 20,
     "device_number": 0,
-    "garage_number": 1
+    "garage_number": 1,
+    "ignore_errors": true,
+    "log_polling": false,
+    "allow_debug": false
   }
 ]
 
 ```
 ## Explanation:
 
-Parameter                   | Description
+Parameter               | Description
 ------------------------|------------
 **accessory**           | Must always be "AladdinConnectGarageDoorOpener" (required)
 **name**                | Name of the Garage Door
@@ -45,8 +48,8 @@ Parameter                   | Description
 **device_number**	| Door number (0-2). Defaults to 0
 **garage_number**	| Garage number (1-3). Defaults to 1
 **ignore_errors**	| true/false. Causes the plugin to replace 'STOPPED' status with 'CLOSED' (defaults to false)
-**log_polling** | true/false. Poll logs only show on error; Set to true to log every poll (defaults to false)
-**allow_debug**	| true/false. Dumps a lot of debug info to stdout. (defaults to false)
+**log_polling**         | true/false. Poll logs only show on error; Set to true to log every poll (defaults to false)
+**allow_debug**         | true/false. Dumps a lot of debug info to stdout. (defaults to false)
 
 ## Note:
 
