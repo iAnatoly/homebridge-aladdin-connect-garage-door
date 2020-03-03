@@ -32,6 +32,7 @@ class AladdinConnectGarageDoorOpener {
     this.ignoreErrors = config.ignore_errors || false;
     this.logPolling = config.log_polling || false;
     this.allowDebug = config.allow_debug || false;
+    this.batteryLowLevel = config.battery_low_level || 15;
   }
 
   getServices () {
@@ -47,7 +48,11 @@ class AladdinConnectGarageDoorOpener {
         .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
         .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener');
 
-    return [informationService, this.garageDoorService];
+    this.batteryService = new Service.BatteryService();
+    this.batteryService.getCharacteristic(Characteristic.BatteryLevel)
+	.on('get', this.getBatteryLevel.bind(this));
+
+    return [informationService, this.garageDoorService, this.batteryService];
   }
 
   setState(isClosed, callback, context) {
@@ -154,4 +159,22 @@ class AladdinConnectGarageDoorOpener {
       accessory.pollStateDelay * 1000
     );
   }
+
+  getBatteryLevel(callback) {
+    var accessory = this;
+    aladdinGarageDoor(
+      accessory.username, accessory.password,
+      'battery',
+      function (batteryLevel) {
+	accessory
+	  .batteryService
+	  .setCharacteristic(Characteristic.StatusLowBattery, batteryLevel < accessory.batteryLowLevel);
+        callback(null, batteryLevel, 'getBatteryLevel');
+      },
+      accessory.deviceNumber,
+      accessory.garageNumber,
+      accessory.allowDebug
+    );
+  }
+
 }

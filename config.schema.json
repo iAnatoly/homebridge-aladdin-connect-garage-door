@@ -46,6 +46,11 @@
         "type": "integer",
         "placeholder": "1"
       },
+      "battery_low_level": {
+        "title": "Low battery warning threshold level (in percent)",
+        "type": "integer",
+        "placeholder": "15"
+      },
       "ignore_errors": {
         "title": "Ignore Errors",
         "type": "boolean"
