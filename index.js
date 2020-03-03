@@ -51,7 +51,7 @@ class AladdinConnectGarageDoorOpener {
     batteryService.getCharacteristic(Characteristic.BatteryLevel)
 	.on('get', this.getBatteryLevel.bind(this));
 
-    return [informationService, this.garageDoorService];
+    return [informationService, this.garageDoorService, batteryService];
   }
 
   setState(isClosed, callback, context) {
