@@ -98,7 +98,8 @@
       "description": "Don't change these, unless you understand what you're doing.",
       "items": [
         "ignore_errors",
-        "allow_debug"
+        "allow_debug",
+        "battery_low_level"
       ]
     }
   ],
