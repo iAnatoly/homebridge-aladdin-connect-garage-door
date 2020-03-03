@@ -47,6 +47,10 @@ class AladdinConnectGarageDoorOpener {
         .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
         .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener');
 
+    const batteryService = new Service.BatteryService();
+    batteryService.getCharacteristic(Characteristic.BatteryLevel)
+	.on('get', this.getBatteryLevel.bind(this));
+
     return [informationService, this.garageDoorService];
   }
 
@@ -152,6 +156,20 @@ class AladdinConnectGarageDoorOpener {
         })
       },
       accessory.pollStateDelay * 1000
+    );
+  }
+
+  getBatteryLevel(callback) {
+    var accessory = this;
+    aladdinGarageDoor(
+      accessory.username, accessory.password,
+      'battery',
+      function (batteryLevel) {
+        callback(null, batteryLevel, 'getBatteryLevel');
+      },
+      accessory.deviceNumber,
+      accessory.garageNumber,
+      accessory.allowDebug
     );
   }
 }
