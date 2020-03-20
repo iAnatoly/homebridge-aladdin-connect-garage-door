@@ -30,7 +30,7 @@
     "homebridge": ">=0.3.0"
   },
   "dependencies": {
-    "node-aladdin-connect-garage-door": "^0.1.1"
+    "node-aladdin-connect-garage-door": "^0.1.2"
   },
   "devDependencies": {},
   "scripts": {}
