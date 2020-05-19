@@ -1,6 +1,7 @@
 # homebridge-aladdin-connect-garage-door
 [![npm](https://badgen.net/npm/v/homebridge-aladdin-connect-garage-door)](https://www.npmjs.com/package/homebridge-aladdin-connect-garage-door)
 [![npm](https://badgen.net/npm/dt/homebridge-aladdin-connect-garage-door)](https://www.npmjs.com/package/homebridge-aladdin-connect-garage-door)
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 
 [Homebridge](https://github.com/homebridge/homebridge) plugin that supports Genie Aladdin garage door opener.
 
