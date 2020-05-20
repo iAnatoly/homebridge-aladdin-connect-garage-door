@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://github.com/homebridge/homebridge/wiki/Verified-Plugins#verified-plugins"><img alt="Homebridge Verified" src="https://raw.githubusercontent.com/iAnatoly/homebridge-aladdin-connect-garage-door/master/branding/homebridge_genie_aladdin_connect_plugin_logo.png" width="500px"></a>
+</p>
+
 # homebridge-aladdin-connect-garage-door
 [![npm](https://badgen.net/npm/v/homebridge-aladdin-connect-garage-door)](https://www.npmjs.com/package/homebridge-aladdin-connect-garage-door)
 [![npm](https://badgen.net/npm/dt/homebridge-aladdin-connect-garage-door)](https://www.npmjs.com/package/homebridge-aladdin-connect-garage-door)
