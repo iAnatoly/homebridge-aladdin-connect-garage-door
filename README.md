@@ -31,7 +31,7 @@ Configuration sample:
   {
     "accessory": "AladdinConnectGarageDoorOpener",
     "name": "Garage Door",
-    "username": "your.aladdin.connect.username@gmail.con",
+    "username": "your.aladdin.connect.username@gmail.com",
     "password": "",
     "status_update_delay": 15,
     "poll_state_delay": 20,
