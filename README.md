@@ -31,7 +31,7 @@ Configuration sample:
   {
     "accessory": "AladdinConnectGarageDoorOpener",
     "name": "Garage Door",
-    "username": "your.aladdin.connect.username@gmail.com",
+    "username": "",
     "password": "",
     "status_update_delay": 15,
     "poll_state_delay": 20,
@@ -51,7 +51,7 @@ Parameter               | Description
 ------------------------|------------
 **accessory**           | Must always be "AladdinConnectGarageDoorOpener" (required)
 **name**                | Name of the Garage Door
-**username**            | Your Aladdin Connect username. NOTE: use 'owner' username. Delegated access does not work
+**username**            | Your Aladdin Connect username (email address). NOTE: use 'owner' username. Delegated access does not work
 **password**            | Your Aladdin Connect password
 **status_update_delay** | Time to have door in opening or closing state (defaults to 15 seconds)
 **poll_state_delay**    | Time between polling for the garage door's state (leave blank to disable state polling)
