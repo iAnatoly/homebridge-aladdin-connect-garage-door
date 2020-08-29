@@ -1,6 +1,6 @@
 {
   "name": "homebridge-aladdin-connect-garage-door",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Garage Door Opener plugin for Genie Aladdin Connect",
   "author": {
     "name": "Anatoly Ivanov"
