@@ -16,16 +16,11 @@ This plugin is a combo of:
 
 Mainly, so you can put username and password into your homebridge config, rather than hardcoding them into javascript, or devising a system to pass them on through docker secrets (I've done both). Also, homebridge won't be forking a shell and an extra node process every time it needs to issue a command, which (considering the state monitoring every 15 seconds) saves quite a lot of CPU cycles. 
 
-## Installation
-
-1. Install homebridge using: `npm install -g homebridge`
-2. Install this plugin using: `npm install -g homebridge-aladdin-connect-garage-door`
-3. Update your configuration file. See the sample below.
-
 ## Configuration
+This easiest way to use this plugin is to use [homebridge-config-ui-x](https://www.npmjs.com/package/homebridge-config-ui-x).  
+To configure manually, add to the `accessories` section of Homebridge's `config.json` after installing the plugin.
 
-Configuration sample:
-
+**Config:**
 ```json
 "accessories": [
   {
