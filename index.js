@@ -75,6 +75,10 @@ class AladdinConnectGarageDoorOpener {
           accessory
             .garageDoorService
             .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.OPENING);
+          accessory
+            .garageDoorService
+            .getCharacteristic(Characteristic.TargetDoorState)
+            .setValue(Characteristic.CurrentDoorState.OPEN, null, 'pollState');
           setTimeout(
             function() {
               accessory
@@ -87,6 +91,10 @@ class AladdinConnectGarageDoorOpener {
           accessory
             .garageDoorService
             .setCharacteristic(Characteristic.CurrentDoorState, Characteristic.CurrentDoorState.CLOSING);
+          accessory
+            .garageDoorService
+            .getCharacteristic(Characteristic.TargetDoorState)
+            .setValue(Characteristic.CurrentDoorState.CLOSED, null, 'pollState');
           setTimeout(
             function() {
               accessory
