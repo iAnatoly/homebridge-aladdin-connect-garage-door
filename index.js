@@ -39,7 +39,6 @@ class AladdinConnectGarageDoorOpener {
     this.garageDoorService = new Service.GarageDoorOpener(this.name, this.name);
     this.garageDoorService.getCharacteristic(Characteristic.TargetDoorState)
         .on('set', this.setState.bind(this))
-        .on('get', this.getState.bind(this));
     this.garageDoorService.getCharacteristic(Characteristic.CurrentDoorState)
         .on('get', this.getState.bind(this));
  
@@ -78,7 +77,7 @@ class AladdinConnectGarageDoorOpener {
           accessory
             .garageDoorService
             .getCharacteristic(Characteristic.TargetDoorState)
-            .setValue(Characteristic.CurrentDoorState.OPEN, null, 'pollState');
+            .setValue(Characteristic.TargetDoorState.OPEN, null, 'pollState');
           setTimeout(
             function() {
               accessory
@@ -94,7 +93,7 @@ class AladdinConnectGarageDoorOpener {
           accessory
             .garageDoorService
             .getCharacteristic(Characteristic.TargetDoorState)
-            .setValue(Characteristic.CurrentDoorState.CLOSED, null, 'pollState');
+            .setValue(Characteristic.TargetDoorState.CLOSED, null, 'pollState');
           setTimeout(
             function() {
               accessory
@@ -150,8 +149,7 @@ class AladdinConnectGarageDoorOpener {
             return;
           }
   
-          if (currentDeviceState === Characteristic.CurrentDoorState.OPEN 
-              || currentDeviceState === Characteristic.CurrentDoorState.CLOSED) {
+          if ([Characteristic.TargetDoorState.OPEN, Characteristic.TargetDoorState.CLOSED].includes(currentDeviceState)) {
             // Set the target state to match the actual state
             // If this isn't done the Home app will show the door in the wrong transitioning state (opening/closing)
             accessory
