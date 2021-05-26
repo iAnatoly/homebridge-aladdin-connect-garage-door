@@ -171,9 +171,10 @@ class AladdinConnectGarageDoorOpener {
       accessory.username, accessory.password,
       'battery',
       function (batteryLevel) {
+        var reportedBatteryLevel = isNaN(batteryLevel) ? 0 : batteryLevel;
         accessory.batteryService
-          .setCharacteristic(Characteristic.StatusLowBattery, batteryLevel < accessory.batteryLowLevel);
-        callback(null, batteryLevel, 'getBatteryLevel');
+          .setCharacteristic(Characteristic.StatusLowBattery, reportedBatteryLevel < accessory.batteryLowLevel);
+        callback(null, reportedBatteryLevel, 'getBatteryLevel');
       },
       accessory.deviceNumber,
       accessory.garageNumber,
