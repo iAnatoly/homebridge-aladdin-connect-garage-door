@@ -6,7 +6,6 @@
 'use strict'
 
 const aladdinGarageDoor = require('node-aladdin-connect-garage-door');
-
 let Service, Characteristic
 
 module.exports = (homebridge) => {
@@ -38,18 +37,18 @@ class AladdinConnectGarageDoorOpener {
   getServices () {
     this.garageDoorService = new Service.GarageDoorOpener(this.name, this.name);
     this.garageDoorService.getCharacteristic(Characteristic.TargetDoorState)
-        .on('set', this.setState.bind(this))
+      .on('set', this.setState.bind(this))
     this.garageDoorService.getCharacteristic(Characteristic.CurrentDoorState)
-        .on('get', this.getState.bind(this));
- 
+      .on('get', this.getState.bind(this));
+
     const informationService = new Service.AccessoryInformation()
-        .setCharacteristic(Characteristic.Manufacturer, 'iAnatoly')
-        .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
-        .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener');
+      .setCharacteristic(Characteristic.Manufacturer, 'iAnatoly')
+      .setCharacteristic(Characteristic.Model, 'GenieAladdinGarageDoorOpener')
+      .setCharacteristic(Characteristic.SerialNumber, 'iAnatoly/AladdinConnectGarageDoorOpener');
 
     this.batteryService = new Service.BatteryService();
     this.batteryService.getCharacteristic(Characteristic.BatteryLevel)
-	.on('get', this.getBatteryLevel.bind(this));
+      .on('get', this.getBatteryLevel.bind(this));
 
     return [informationService, this.garageDoorService, this.batteryService];
   }
@@ -134,13 +133,13 @@ class AladdinConnectGarageDoorOpener {
 
   pollState() {
     var accessory = this;
-  
+
     // Clear any existing timer
     if (accessory.stateTimer) {
       clearTimeout(accessory.stateTimer);
       accessory.stateTimer = null;
     }
-  
+
     accessory.stateTimer = setTimeout(
       function() {
         accessory.getState(function(err, currentDeviceState) {
@@ -148,7 +147,7 @@ class AladdinConnectGarageDoorOpener {
             accessory.log(err);
             return;
           }
-  
+
           if ([Characteristic.TargetDoorState.OPEN, Characteristic.TargetDoorState.CLOSED].includes(currentDeviceState)) {
             // Set the target state to match the actual state
             // If this isn't done the Home app will show the door in the wrong transitioning state (opening/closing)
@@ -172,9 +171,8 @@ class AladdinConnectGarageDoorOpener {
       accessory.username, accessory.password,
       'battery',
       function (batteryLevel) {
-	accessory
-	  .batteryService
-	  .setCharacteristic(Characteristic.StatusLowBattery, batteryLevel < accessory.batteryLowLevel);
+        accessory.batteryService
+          .setCharacteristic(Characteristic.StatusLowBattery, batteryLevel < accessory.batteryLowLevel);
         callback(null, batteryLevel, 'getBatteryLevel');
       },
       accessory.deviceNumber,
@@ -182,5 +180,4 @@ class AladdinConnectGarageDoorOpener {
       accessory.allowDebug
     );
   }
-
 }
